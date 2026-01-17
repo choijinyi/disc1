@@ -1,10 +1,11 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import StartScreen from './components/StartScreen';
 import TestScreen from './components/TestScreen';
 import ResultsScreen from './components/ResultsScreen';
 import type { Answers, Scores } from './types';
 import { questions } from './constants';
+import { logEvent, analytics } from './firebase';
 
 type AppStep = 'start' | 'test' | 'results';
 
@@ -12,8 +13,18 @@ const App: React.FC = () => {
   const [step, setStep] = useState<AppStep>('start');
   const [scores, setScores] = useState<Scores | null>(null);
 
+  useEffect(() => {
+    if (analytics) {
+        logEvent(analytics, 'page_view', { page_title: 'DISC_Assessment_Home' });
+    }
+  }, []);
+
   const handleStart = useCallback(() => {
+    if (analytics) {
+        logEvent(analytics, 'test_start');
+    }
     setStep('test');
+    window.scrollTo(0, 0);
   }, []);
 
   const handleSubmit = useCallback((finalAnswers: Answers) => {
@@ -24,13 +35,26 @@ const App: React.FC = () => {
       totalScores.S += answer.S || 0;
       totalScores.C += answer.C || 0;
     });
+    
     setScores(totalScores);
+    
+    if (analytics) {
+        logEvent(analytics, 'test_complete', {
+            score_d: totalScores.D,
+            score_i: totalScores.I,
+            score_s: totalScores.S,
+            score_c: totalScores.C
+        });
+    }
+    
     setStep('results');
+    window.scrollTo(0, 0);
   }, []);
   
   const handleReset = useCallback(() => {
     setScores(null);
     setStep('start');
+    window.scrollTo(0, 0);
   }, []);
 
   const renderStep = () => {

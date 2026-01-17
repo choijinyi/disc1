@@ -1,5 +1,5 @@
 {
-  "name": "DISC 행동유형 평가서 (DISC Personality Test)",
-  "description": "A web application that allows users to take the DISC assessment test. Users answer a series of questions by ranking options to determine their personality profile according to the DISC model. The results include a score breakdown, a visual chart, and a detailed profile description.",
+  "name": "DISC 행동유형 검사 - 40문항 정밀 진단",
+  "description": "40가지 행동 특성 문항을 통해 자신의 주도성(D), 사교성(I), 안정성(S), 신중성(C)을 분석하고 상세한 리포트를 PDF로 저장할 수 있는 전문적인 성격 진단 도구입니다.",
   "requestFramePermissions": []
 }
